@@ -1,5 +1,7 @@
 package com.example.tickethelper
 
+// 官方渠道久事体育接口查询 screen  原名VipTicketScreen
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,17 +47,17 @@ fun AppTicketScreen(navController: NavController) {
     val vipTicketService = remember { VipTicketService.create() }
     val coroutineScope = rememberCoroutineScope()
 
-    // 多配置选择相关
+    // 多配置相关
     val configs = ShowConfigRepository.defaultConfigs
     var selectedConfig by remember { mutableStateOf(configs.first()) }
     var expanded by remember { mutableStateOf(false) }
 
-    // 数据状态管理
+    // 数据状态
     var vipTicketData by remember { mutableStateOf<VipTicketData?>(null) }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
 
-    // 加载数据函数
+    // 加载数据
     fun loadVipTicketData() {
         isLoading = true
         errorMessage = ""
@@ -84,14 +86,13 @@ fun AppTicketScreen(navController: NavController) {
         }
     }
 
-    // 选中项变化时加载数据
     LaunchedEffect(selectedConfig) {
         loadVipTicketData()
     }
 
     val (showHelpDialog, setShowHelpDialog) = remember { mutableStateOf(false) }
 
-    // 说明对话框
+    // 说明dial
     if (showHelpDialog) {
         AlertDialog(
             onDismissRequest = { setShowHelpDialog(false) },
@@ -150,7 +151,7 @@ fun AppTicketScreen(navController: NavController) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            // 配置选择器（下拉菜单）
+            // 下拉
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -204,7 +205,7 @@ fun AppTicketScreen(navController: NavController) {
                 }
             }
 
-            // 内容展示
+            // 内容
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -229,7 +230,7 @@ fun AppTicketScreen(navController: NavController) {
                             modifier = Modifier.fillMaxSize(),
                             contentPadding = PaddingValues(horizontal = 16.dp)
                         ) {
-                            // 遍历票种列表
+                            // 遍历票种
                             items(vipTicketData!!.showSessionModelList) { session ->
                                 Card(
                                     modifier = Modifier
@@ -240,14 +241,14 @@ fun AppTicketScreen(navController: NavController) {
                                     Column(
                                         modifier = Modifier.padding(16.dp)
                                     ) {
-                                        // 票种名称
+                                        // 名称
                                         Text(
                                             text = session.sessionName,
                                             style = MaterialTheme.typography.headlineSmall,
                                             modifier = Modifier.padding(bottom = 8.dp)
                                         )
 
-                                        // 时间信息
+                                        // 时间
                                         Text(
                                             text = session.beginTime,
                                             style = MaterialTheme.typography.bodyMedium,
@@ -255,10 +256,9 @@ fun AppTicketScreen(navController: NavController) {
                                             modifier = Modifier.padding(bottom = 16.dp)
                                         )
 
-                                        // 票种详情列表
+                                        // 详情列表
                                         Column {
                                             session.priceInfoModelList.forEachIndexed { index, priceInfo ->
-                                                // 每个票种详情项
                                                 Column(
                                                     modifier = Modifier
                                                         .fillMaxWidth()

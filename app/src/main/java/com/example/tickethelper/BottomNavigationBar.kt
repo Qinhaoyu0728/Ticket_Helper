@@ -16,7 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 @Composable
 fun BottomNavigationBar(
     navController: NavController,
-    modifier: Modifier = Modifier // 添加modifier参数
+    modifier: Modifier = Modifier
 ) {
     val items = listOf(
         NavigationItem(
@@ -53,7 +53,7 @@ fun BottomNavigationBar(
     }
 }
 
-// 导航项数据类
+// 导航数据
 data class NavigationItem(
     val route: String,
     val icon: ImageVector,

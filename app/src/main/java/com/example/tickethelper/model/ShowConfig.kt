@@ -2,14 +2,14 @@ package com.example.tickethelper.model
 
 // 国内久事APP渠道
 
-// 存储单组showId和sign的配置
+// 存储单组showId和sign
 data class ShowConfig(
     val name: String,
     val showId: String,
     val sign: String
 )
 
-// 内置配置
+// 内置
 object ShowConfigRepository {
     val defaultConfigs = listOf(
         ShowConfig(

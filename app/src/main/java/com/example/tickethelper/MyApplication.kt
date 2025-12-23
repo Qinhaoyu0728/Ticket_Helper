@@ -7,7 +7,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 
-// 全局应用类，DataStore和通知
+// DataStore和通知
 class MyApplication : Application() {
 
     companion object {
@@ -33,14 +33,14 @@ class MyApplication : Application() {
                 enableVibration(true)
             }
 
-            // 服务通知渠道
+            // 服务通知
             val serviceChannel = NotificationChannel(
                 "ticket_service_channel",
                 "余票监控服务",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 description = "后台监控余票状态的服务"
-                setSound(null, null) // 服务通知不发声
+                setSound(null, null)
                 enableVibration(false)
             }
 

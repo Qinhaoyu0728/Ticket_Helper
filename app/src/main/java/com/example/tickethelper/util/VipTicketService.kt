@@ -1,6 +1,6 @@
 package com.example.tickethelper.util
 
-// 国内久事APP渠道
+// 国内久事APP渠道 --> AppTicketScreen
 
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -28,7 +28,7 @@ interface VipTicketService {
     }
 }
 
-// 响应数据类
+// 响应
 data class VipTicketResponse(
     val data: VipTicketData?,
     val rtnCode: String,

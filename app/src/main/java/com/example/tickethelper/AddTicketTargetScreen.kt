@@ -30,7 +30,7 @@ fun AddTicketTargetScreen(navController: NavController) {
     val ticketTargetDataStore = TicketTargetDataStore.getInstance(context)
     val coroutineScope = rememberCoroutineScope()
 
-    // 内置抢票目标列表（可根据需求扩展）
+    // 内置抢票目标列表
     val predefinedTargets = listOf(
         PredefinedTicketTarget(
             category = "F1 A铂金看台",
@@ -74,20 +74,20 @@ fun AddTicketTargetScreen(navController: NavController) {
         )
     )
 
-    // 状态管理
-    var expanded by remember { mutableStateOf(false) } // 下拉列表展开状态
+    // 状态
+    var expanded by remember { mutableStateOf(false) } // 下拉列表
     var selectedPredefinedIndex by remember { mutableStateOf(-1) } // 选中的内置目标索引（-1表示未选中）
     var customCategory by remember { mutableStateOf("") } // 自定义类目
     var customTargetId by remember { mutableStateOf("") } // 自定义ID
     var isSaving by remember { mutableStateOf(false) }
 
-    // 选中项文本（用于下拉框显示）
+    // 选中项
     val selectedText = when {
         selectedPredefinedIndex >= 0 -> predefinedTargets[selectedPredefinedIndex].category
         else -> "选择内置目标或手动输入"
     }
 
-    // 当选中内置目标变化时，自动填充输入框
+    // 自动填充输入框 is selecting?
     LaunchedEffect(selectedPredefinedIndex) {
         if (selectedPredefinedIndex >= 0) {
             val selected = predefinedTargets[selectedPredefinedIndex]
@@ -96,7 +96,7 @@ fun AddTicketTargetScreen(navController: NavController) {
         }
     }
 
-    // 保存逻辑
+    // 保存
     fun saveTarget() {
         val category = customCategory.trim()
         val targetId = customTargetId.trim()
@@ -117,7 +117,7 @@ fun AddTicketTargetScreen(navController: NavController) {
                 )
                 withContext(Dispatchers.Main) {
                     isSaving = false
-                    navController.popBackStack() // 返回列表页
+                    navController.popBackStack()
                     Toast.makeText(context, "添加成功", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
@@ -164,7 +164,7 @@ fun AddTicketTargetScreen(navController: NavController) {
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            // 内置目标下拉选择
+            // 内置目标下拉
             Text(
                 text = "选择内置目标（可选）",
                 style = MaterialTheme.typography.labelMedium,
@@ -174,27 +174,27 @@ fun AddTicketTargetScreen(navController: NavController) {
             // ExposedDropdownMenu
             ExposedDropdownMenuBox(
                 expanded = expanded,
-                onExpandedChange = { expanded = !expanded } // 点击切换展开/收起状态
+                onExpandedChange = { expanded = !expanded }
             ) {
                 // 下拉输入框
                 OutlinedTextField(
                     value = selectedText,
-                    onValueChange = {}, // 禁止手动输入，仅通过下拉选择
-                    readOnly = true, // 只读模式
+                    onValueChange = {}, // 手动输入 banned
+                    readOnly = true, // 只读
                     label = { Text("内置目标列表") },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .menuAnchor(), // 标记为菜单锚点，用于定位下拉列表
+                        .menuAnchor(),
                 )
 
-                // 下拉列表内容（带展开/收起动画）
+                // 下拉列表
                 ExposedDropdownMenu(
                     expanded = expanded,
-                    onDismissRequest = { expanded = false }, // 点击外部收起
+                    onDismissRequest = { expanded = false },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    // 内置目标选项
+                    // 内置目标
                     predefinedTargets.forEachIndexed { index, target ->
                         DropdownMenuItem(
                             text = {
@@ -211,17 +211,16 @@ fun AddTicketTargetScreen(navController: NavController) {
                                 }
                             },
                             onClick = {
-                                selectedPredefinedIndex = index // 选中当前项
-                                expanded = false // 收起列表
+                                selectedPredefinedIndex = index // 选中项
+                                expanded = false
                             },
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
 
-                    // 分隔线
                     Divider(modifier = Modifier.padding(horizontal = 16.dp))
 
-                    // 自定义选项
+                    // 自定义
                     DropdownMenuItem(
                         text = {
                             Text(
@@ -231,17 +230,17 @@ fun AddTicketTargetScreen(navController: NavController) {
                             )
                         },
                         onClick = {
-                            selectedPredefinedIndex = -1 // 重置为自定义
+                            selectedPredefinedIndex = -1 // 重置
                             customCategory = ""
                             customTargetId = ""
-                            expanded = false // 收起列表
+                            expanded = false
                         },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
             }
 
-            // 手动输入区域
+            // 手动输入
             Column(modifier = Modifier.padding(top = 24.dp)) {
                 Text(
                     text = "目标信息（可编辑）",

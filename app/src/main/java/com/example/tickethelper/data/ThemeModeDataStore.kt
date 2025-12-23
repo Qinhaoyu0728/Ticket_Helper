@@ -22,7 +22,7 @@ class ThemeModeDataStore(private val dataStore: DataStore<Preferences>) {
         }
     }
 
-    // 获取当前主题模式（默认跟随系统）
+    // 获取主题
     val getThemeMode: Flow<AppThemeMode> = dataStore.data
         .map { preferences ->
             val modeStr = preferences[THEME_MODE_KEY]
@@ -33,7 +33,7 @@ class ThemeModeDataStore(private val dataStore: DataStore<Preferences>) {
             }
         }
 
-    // 保存主题模式
+    // 保存主题
     suspend fun saveThemeMode(mode: AppThemeMode) {
         dataStore.edit { preferences ->
             preferences[THEME_MODE_KEY] = mode.name

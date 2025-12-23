@@ -24,30 +24,29 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(navController: NavController) {
 
     val context = LocalContext.current
-    // 初始化隐藏功能数据存储
+
+    // 初始化
     val hiddenFeaturesDataStore = HiddenFeaturesDataStore.getInstance(context)
 
-    // 关键修复：声明hiddenFeatures状态变量
     var hiddenFeatures by remember { mutableStateOf(emptySet<String>()) }
 
-    // 加载已保存的隐藏功能
+    // 加载隐藏功能
     LaunchedEffect(Unit) {
         hiddenFeaturesDataStore.getHiddenFeatures.collect { hidden ->
             hiddenFeatures = hidden
         }
     }
 
-    // 关键修复：实现切换功能可见性的函数
     fun toggleFeatureVisibility(featureName: String) {
         val newHiddenFeatures = if (hiddenFeatures.contains(featureName)) {
-            // 如果已隐藏，则移除（显示）
+            // if 隐藏-->移除（显示）
             hiddenFeatures - featureName
         } else {
-            // 如果未隐藏，则添加（隐藏）
+            // if not 隐藏-->添加（隐藏）
             hiddenFeatures + featureName
         }
 
-        // 保存到数据存储
+        // 保存
         CoroutineScope(Dispatchers.IO).launch {
             hiddenFeaturesDataStore.saveHiddenFeatures(newHiddenFeatures)
         }
@@ -71,7 +70,7 @@ fun SettingsScreen(navController: NavController) {
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            // 设置项：功能卡片排序
+            // 设置
             SettingItem(
                 icon = Icons.Default.Menu,
                 title = "功能卡片排序",
@@ -93,7 +92,6 @@ fun SettingsScreen(navController: NavController) {
                 description = "设置应用的显示模式",
                 onClick = { navController.navigate(NavigationRoutes.THEME_SETTINGS) }
             )
-            // 可以添加其他设置项
         }
     }
 }

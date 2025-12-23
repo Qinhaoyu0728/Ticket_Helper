@@ -58,14 +58,14 @@ fun TicketAssistantScreen(navController: NavController) {
     var showOverallStatus by remember { mutableStateOf(true) }
 
 
-    // 加载保存的目标
+    // 加载保存目标
     LaunchedEffect(Unit) {
         ticketTargetDataStore.getTicketTargets.collect { targets ->
             ticketTargets = targets
         }
     }
 
-    // 刷新余票状态
+    // 刷新
     fun refreshTicketStatus() {
         if (isRefreshing || ticketTargets.isEmpty()) return
 
@@ -80,9 +80,9 @@ fun TicketAssistantScreen(navController: NavController) {
                         val sessions = response.data.sessionVOs
                         val sessionDetails = mutableListOf<TicketSessionDetail>()
 
-                        // 解析每个票种状态
+                        // 解析
                         sessions.forEachIndexed { index, session ->
-                            // 票种名称：按数量匹配（1个=三日票，多个按顺序）
+                            // 票种名称 1个=三日票 多个按顺序
                             val sessionType = if (sessions.size == 1) {
                                 "三日票"
                             } else {
@@ -98,7 +98,7 @@ fun TicketAssistantScreen(navController: NavController) {
                             )
                         }
 
-                        // 整体状态判断（只要有一个票种有票就标记为有票）
+                        // 整体状态判断
                         val overallStatus = if (sessionDetails.any { it.sessionStatus == "ON_SALE" }) {
                             "ON_SALE"
                         } else {
@@ -110,7 +110,6 @@ fun TicketAssistantScreen(navController: NavController) {
                             sessionDetails = sessionDetails
                         )
                     } else {
-                        // 接口返回异常
                         newStatusMap[target.id] = TargetTicketStatus(
                             overallStatus = "ERROR",
                             sessionDetails = emptyList()
@@ -125,7 +124,7 @@ fun TicketAssistantScreen(navController: NavController) {
                 }
             }
 
-            // 检测状态变化（从缺票变为有票）
+            // 检测状态变化
             newStatusMap.forEach { (targetId, newStatus) ->
                 val oldStatus = lastStatusMap[targetId]
                 val target = ticketTargets.find { it.id == targetId }
@@ -139,7 +138,7 @@ fun TicketAssistantScreen(navController: NavController) {
                 }
             }
 
-            // 更新状态缓存
+            // 更新缓存
             lastStatusMap = newStatusMap.toMap()
 
             withContext(Dispatchers.Main) {
@@ -149,15 +148,15 @@ fun TicketAssistantScreen(navController: NavController) {
         }
     }
 
-//    // 启动自动刷新（每10秒一次）
+//    // 自动刷新（已废弃，使用TicketRefreshService）
 //    fun startAutoRefresh() {
 //        if (autoRefreshJob?.isActive == true) return
 //
 //        autoRefreshJob = coroutineScope.launch(Dispatchers.IO) {
 //            while (true) {
-//                delay(10000) // 10秒刷新一次
+//                delay(10000)
 //                withContext(Dispatchers.Main) {
-//                    refreshTicketStatus() // 调用已有刷新方法
+//                    refreshTicketStatus()
 //                }
 //            }
 //        }
@@ -177,7 +176,7 @@ fun TicketAssistantScreen(navController: NavController) {
         context.stopService(intent)
     }
 
-//    // 停止自动刷新
+//    // 停止自动刷新（已废弃，使用TicketRefreshService）
 //    fun stopAutoRefresh() {
 //        autoRefreshJob?.cancel()
 //    }
@@ -185,14 +184,13 @@ fun TicketAssistantScreen(navController: NavController) {
     // 监听自动刷新配置
     LaunchedEffect(Unit) {
         ticketTargetDataStore.getAutoRefreshConfig.collect { config ->
-            // 启动或停止自动刷新
             if (config.enabled) {
                 startAutoRefresh()
             } else {
                 stopAutoRefresh()
             }
 
-            selectedListStyle = config.listStyle // 同步样式配置
+            selectedListStyle = config.listStyle // 同步样式
             showOverallStatus = config.showOverallStatus
         }
     }
@@ -222,7 +220,6 @@ fun TicketAssistantScreen(navController: NavController) {
                         modifier = Modifier.size(24.dp)
                     ){
                         if (isRefreshing) {
-                            // 刷新中显示进度指示器
                             CircularProgressIndicator(
                                 modifier = Modifier.size(20.dp),
                                 strokeWidth = 2.dp,
@@ -274,7 +271,7 @@ fun TicketAssistantScreen(navController: NavController) {
                         val context = LocalContext.current
                         val coroutineScope = rememberCoroutineScope()
 
-                        // 长按状态管理
+                        // 长按管理
                         var showDeleteDialog by remember { mutableStateOf(false) }
                         var longPressStarted by remember { mutableStateOf(false) }
 
@@ -295,11 +292,10 @@ fun TicketAssistantScreen(navController: NavController) {
                                                 }
                                             }
                                         },
-                                        // 短按或长按取消时：取消计时器
                                         onPress = {
                                             tryAwaitRelease()
                                             longPressStarted = false
-                                            longPressTimer.value?.cancel() // 取消计时器
+                                            longPressTimer.value?.cancel()
                                         }
                                     )
                                 },
@@ -310,7 +306,7 @@ fun TicketAssistantScreen(navController: NavController) {
                                     .fillMaxWidth()
                                     .padding(16.dp)
                             ) {
-                                // 顶部：类目和整体状态
+                                // 类目和整体状态
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -360,7 +356,6 @@ fun TicketAssistantScreen(navController: NavController) {
                                     modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
                                 )
 
-                                // 分隔线
                                 Divider(modifier = Modifier.padding(bottom = 8.dp))
 
                                 // 票种详情列表
@@ -370,9 +365,8 @@ fun TicketAssistantScreen(navController: NavController) {
                                     modifier = Modifier.padding(bottom = 4.dp)
                                 )
 
-                                // 根据选择的样式切换布局
                                 if (selectedListStyle == "two_column") {
-                                    // 两列布局（原有逻辑）
+                                    // 两列
                                     val leftColumn = targetStatus.sessionDetails.take(2)
                                     val rightColumn = targetStatus.sessionDetails.drop(2)
                                     Row(
@@ -390,7 +384,7 @@ fun TicketAssistantScreen(navController: NavController) {
                                         }
                                     }
                                 } else {
-                                    // 单列布局
+                                    // 单列
                                     Column(modifier = Modifier.fillMaxWidth()) {
                                         targetStatus.sessionDetails.forEach { detail ->
                                             Row(
@@ -433,27 +427,22 @@ fun TicketAssistantScreen(navController: NavController) {
                             }
                         }
 
-                        // 长按3秒后显示的删除确认对话框
+                        // 删除确认对话框
                         if (showDeleteDialog) {
                             AlertDialog(
                                 onDismissRequest = {
                                     showDeleteDialog = false
-                                    longPressTimer.value?.cancel() // 关闭对话框时取消计时器
+                                    longPressTimer.value?.cancel()
                                 },
                                 title = { Text("确认删除") },
                                 text = { Text("确定要删除「${target.category}」这个抢票目标吗？") },
                                 confirmButton = {
                                     TextButton(
                                         onClick = {
-                                            // 执行删除操作
                                             coroutineScope.launch {
-                                                // 删除数据存储中的条目
                                                 ticketTargetDataStore.deleteTicketTarget(target.id)
-                                                // 删除状态映射中的缓存
                                                 targetStatusMap  = targetStatusMap.filterKeys { it != target.id }
-                                                // 关闭对话框
                                                 showDeleteDialog = false
-                                                // 提示删除成功
                                                 withContext(Dispatchers.Main) {
                                                     Toast.makeText(
                                                         context,
@@ -493,7 +482,6 @@ fun TicketAssistantScreen(navController: NavController) {
                     enabled = !isRefreshing
                 ){
                     if (isRefreshing) {
-                        // 刷新中显示进度指示器
                         CircularProgressIndicator(
                             modifier = Modifier.size(20.dp),
                             strokeWidth = 2.dp,
@@ -512,7 +500,7 @@ fun TicketAssistantScreen(navController: NavController) {
 }
 
 
-// 独立的票种项组件（复用）
+// 票种项组件
 @Composable
 private fun TicketSessionItem(detail: TicketSessionDetail) {
     Row(
@@ -530,7 +518,7 @@ private fun TicketSessionItem(detail: TicketSessionDetail) {
             overflow = TextOverflow.Ellipsis
         )
 
-        // 票种状态标签（缩小尺寸）
+        // 状态标签
         Box(
             modifier = Modifier
                 .background(

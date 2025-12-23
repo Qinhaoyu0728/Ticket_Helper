@@ -55,7 +55,7 @@ import kotlinx.coroutines.delay
 import java.time.Duration
 import java.time.LocalDateTime
 
-// 功能数据类
+// 数据类
 data class Feature(
     val name: String,
     val icon: ImageVector,
@@ -86,7 +86,7 @@ fun FeaturesScreen(
     var visibleFeatures by remember { mutableStateOf(emptyList<Feature>()) }
     var hasHiddenFeatures by remember { mutableStateOf(false) }
 
-    // 倒计时逻辑
+    // 倒计时
     val targetDate = remember {
         // 2026年3月13日 00:00:00
         LocalDateTime.of(2026, 3, 13, 0, 0, 0)
@@ -94,38 +94,34 @@ fun FeaturesScreen(
     val currentTime = LocalDateTime.now()
     val duration = Duration.between(currentTime, targetDate)
 
-    // 状态变量用于触发重组
     var countdownText by remember { mutableStateOf("") }
     var isCountdownActive by remember { mutableStateOf(true) }
 
-
-    // 加载保存的排序
+    // 加载排序
     LaunchedEffect(Unit) {
-        // 监听排序数据的所有变化
         featureOrderDataStore.getFeatureOrder.collect { order ->
             if (order.isNotEmpty()) {
-                // 重新计算排序后的列表
                 val allFeatures = featuresList.toMutableList()
                 val sortedList = order.mapNotNull { orderName ->
                     allFeatures.find { it.name == orderName }?.also { allFeatures.remove(it) }
                 }
                 val finalList = sortedList + allFeatures
 
-                // 强制更新UI
-                sortedFeatures = finalList.toList() // 转换为新列表实例确保重组
+                // 更新UI
+                sortedFeatures = finalList.toList()
             }
         }
     }
 
-    // 加载隐藏的功能
+    // 加载隐藏功能
     LaunchedEffect(Unit) {
         hiddenFeaturesDataStore.getHiddenFeatures.collect { hidden ->
             hiddenFeatures = hidden
-            // 过滤掉隐藏的功能，但保留"更多"
+            // 过滤掉隐藏的功能 保留"更多"
             visibleFeatures = sortedFeatures.filter {
                 !hidden.contains(it.name) || it.name == "更多"
             }
-            // 检查是否有隐藏的功能
+            // 检查
             hasHiddenFeatures = sortedFeatures.any { hidden.contains(it.name) }
         }
     }
@@ -144,7 +140,6 @@ fun FeaturesScreen(
                 break
             }
 
-            // 计算天、时、分、秒
             val days = diff.toDays()
             val hours = diff.toHours() % 24
             val minutes = diff.toMinutes() % 60
@@ -153,7 +148,7 @@ fun FeaturesScreen(
             countdownText = "距离2026赛季F1上海站还有：\n" +
                     "${days}天 ${hours}时 ${minutes}分 ${seconds}秒"
 
-            delay(1000) // 每秒更新一次
+            delay(1000)
         }
     }
 
@@ -174,7 +169,7 @@ fun FeaturesScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            // 上海站倒计时文本框
+            // 上海站倒计时
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -197,7 +192,7 @@ fun FeaturesScreen(
                 }
             }
 
-            // 功能卡片网格
+            // 功能卡片
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
                 modifier = Modifier.fillMaxSize(),

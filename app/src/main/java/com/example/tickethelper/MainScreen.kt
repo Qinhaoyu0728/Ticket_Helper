@@ -39,20 +39,20 @@ fun MainScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val featureOrderDataStore = (context.applicationContext as MyApplication).featureOrderDataStore
 
-    // 监听当前导航路由
+    // 监听导航路由
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStack?.destination?.route
 
     // 控制底部导航栏是否显示的状态
     var showBottomBar by remember { mutableStateOf(true) }
 
-    // 监听路由变化，决定是否显示底部导航栏
+    // 需要导航条?
     LaunchedEffect(currentRoute) {
-        // 主界面（功能列表页、关于页）显示导航栏，其他功能页隐藏
+        // 主界面 yes
         showBottomBar = when (currentRoute) {
             NavigationRoutes.FEATURES,
             NavigationRoutes.ABOUT -> true
-            else -> false // 个人简介表单/详情页等功能页隐藏
+            else -> false // no
         }
     }
 
@@ -73,11 +73,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
             composable(NavigationRoutes.ABOUT) {
                 AboutScreen()
             }
-            // 添加设置页面
             composable(NavigationRoutes.SETTINGS) {
                 SettingsScreen(navController = navController)
             }
-            // 添加功能排序页面
             composable(NavigationRoutes.FEATURE_ORDER) {
                 FeatureOrderScreen(navController = navController)
             }

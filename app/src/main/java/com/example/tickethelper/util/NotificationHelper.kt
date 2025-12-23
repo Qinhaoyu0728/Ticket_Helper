@@ -20,7 +20,7 @@ object NotificationHelper {
         val contentText = "你关注的 <b>$targetName</b> 有票！快去抢！"
 
         val builder = NotificationCompat.Builder(context, MyApplication.TICKET_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground) // 替换为你的图标
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("抢票通知")
             .setContentText("你关注的$targetName 有票！快去抢！")
             .setStyle(

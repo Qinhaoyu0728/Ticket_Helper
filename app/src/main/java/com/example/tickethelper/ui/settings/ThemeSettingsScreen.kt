@@ -22,17 +22,17 @@ fun ThemeSettingsScreen(navController: NavController) {
     val themeDataStore = ThemeModeDataStore.getInstance(context)
     val scope = rememberCoroutineScope()
 
-    // 当前选中的主题模式
+    // 主题模式
     var selectedThemeMode by remember { mutableStateOf(AppThemeMode.FOLLOW_SYSTEM) }
 
-    // 加载保存的主题设置
+    // 加载主题
     LaunchedEffect(Unit) {
         themeDataStore.getThemeMode.collect { mode ->
             selectedThemeMode = mode
         }
     }
 
-    // 保存主题设置
+    // 保存主题
     fun saveThemeMode(mode: AppThemeMode) {
         scope.launch {
             themeDataStore.saveThemeMode(mode)
@@ -58,28 +58,28 @@ fun ThemeSettingsScreen(navController: NavController) {
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            // 显示模式设置
+            // 模式设置
             Text(
                 "显示模式",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            // 浅色模式选项
+            // 浅色
             RadioButtonItem(
                 label = "浅色模式",
                 selected = selectedThemeMode == AppThemeMode.LIGHT,
                 onSelect = { saveThemeMode(AppThemeMode.LIGHT) }
             )
 
-            // 深色模式选项
+            // 深色
             RadioButtonItem(
                 label = "深色模式",
                 selected = selectedThemeMode == AppThemeMode.DARK,
                 onSelect = { saveThemeMode(AppThemeMode.DARK) }
             )
 
-            // 跟随系统选项
+            // 跟随系统
             RadioButtonItem(
                 label = "跟随系统",
                 selected = selectedThemeMode == AppThemeMode.FOLLOW_SYSTEM,
@@ -89,7 +89,7 @@ fun ThemeSettingsScreen(navController: NavController) {
     }
 }
 
-// 单选按钮项组件
+// 单选按钮组件
 @Composable
 private fun RadioButtonItem(
     label: String,

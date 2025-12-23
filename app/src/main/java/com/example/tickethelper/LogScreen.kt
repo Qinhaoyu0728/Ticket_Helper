@@ -38,11 +38,11 @@ import com.example.tickethelper.util.LogCollector
 fun LogScreen(
     navController: NavController
 ) {
-    // 收集实时日志流
+    // 收集日志
     val logList = LogCollector.logList.collectAsStateWithLifecycle(initialValue = emptyList())
     val (showHelpDialog, setShowHelpDialog) = remember { mutableStateOf(false) }
 
-    // 日志说明对话框
+    // 日志说明
     if (showHelpDialog) {
         AlertDialog(
             onDismissRequest = { setShowHelpDialog(false) },
@@ -97,7 +97,7 @@ fun LogScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(Color.Black) // 黑色背景更易读日志
+                .background(Color.Black)
         ) {
             if (logList.value.isEmpty()) {
                 // 空日志提示
@@ -113,7 +113,7 @@ fun LogScreen(
                     )
                 }
             } else {
-                // 日志列表（倒序显示，最新的在底部）
+                // 日志
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -126,7 +126,7 @@ fun LogScreen(
                 }
             }
 
-//            // 清空日志按钮（底部快捷操作）
+//            // 清空日志按钮
 //            Button(
 //                onClick = { LogCollector.clearLogs() },
 //                modifier = Modifier
@@ -145,13 +145,13 @@ fun LogScreen(
  */
 @Composable
 fun LogItemRow(logItem: LogCollector.LogItem) {
-    // 根据日志级别设置文字颜色
+    // 级别设置
     val textColor = when (logItem.level) {
-        "D" -> Color.Cyan // Debug -> 青色
-        "I" -> Color.Green // Info -> 绿色
-        "W" -> Color.Yellow // Warn -> 黄色
-        "E" -> Color.Red // Error -> 红色
-        "V" -> Color.Gray // Verbose -> 灰色
+        "D" -> Color.Cyan // Debug
+        "I" -> Color.Green // Info
+        "W" -> Color.Yellow // Warn
+        "E" -> Color.Red // Error
+        "V" -> Color.Gray // Verbose
         else -> Color.White
     }
 

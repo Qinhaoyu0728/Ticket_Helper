@@ -57,14 +57,14 @@ interface TicketService {
 
 val sessionTypeMapping = listOf("三日票", "周五票", "周六票", "周日票")
 
-// 扩展票种详情数据类
+// 票种详情
 data class TicketSessionDetail(
     val sessionId: String,
     val sessionType: String, // 票种名称（三日票/周五票等）
-    val sessionStatus: String, // 余票状态
+    val sessionStatus: String, // 状态
 )
 
-// 扩展目标状态数据类（替换原有的单一状态）
+// 目标状态数据类
 data class TargetTicketStatus(
     val overallStatus: String, // 整体状态（有票/缺票）
     val sessionDetails: List<TicketSessionDetail> // 各票种详情

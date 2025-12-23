@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 import java.util.UUID
 
 @SuppressLint("UnsafeOptInUsageError")
-@Serializable // 标记为可序列化
+@Serializable
 data class TicketTarget(
     val id: String = UUID.randomUUID().toString(),
     val targetId: String,

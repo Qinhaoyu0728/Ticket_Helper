@@ -34,7 +34,7 @@ fun AutoRefreshSettingsScreen(
     var isSaving by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
 
-    // 加载当前配置
+    // 加载配置
     LaunchedEffect(Unit) {
         ticketTargetDataStore.getAutoRefreshConfig.collect { config ->
             isAutoRefreshEnabled = config.enabled
@@ -64,7 +64,7 @@ fun AutoRefreshSettingsScreen(
         }
     }
 
-    // 单独保存整体状态开关配置
+    // 保存整体状态开关配置
     fun saveOverallStatusConfig(show: Boolean) {
         coroutineScope.launch {
             ticketTargetDataStore.saveShowOverallStatusConfig(show)
@@ -73,7 +73,7 @@ fun AutoRefreshSettingsScreen(
 
     val (showHelpDialog, setShowHelpDialog) = remember { mutableStateOf(false) }
 
-    // 说明对话框
+    // 说明dial
     if (showHelpDialog) {
         AlertDialog(
             onDismissRequest = { setShowHelpDialog(false) },
@@ -159,7 +159,6 @@ fun AutoRefreshSettingsScreen(
                 )
             }
 
-            // 分隔线
             Divider(modifier = Modifier.padding(vertical = 24.dp))
 
             // 显示设置
@@ -169,7 +168,7 @@ fun AutoRefreshSettingsScreen(
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            // 整体状态标签开关
+            // 整体状态
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -187,13 +186,12 @@ fun AutoRefreshSettingsScreen(
                     checked = showOverallStatus,
                     onCheckedChange = {
                         showOverallStatus = it
-                        saveOverallStatusConfig(it) // 单独保存开关状态
+                        saveOverallStatusConfig(it)
                     },
                     enabled = !isSaving
                 )
             }
 
-            // 分隔线
             Divider(modifier = Modifier.padding(vertical = 16.dp))
 
             // 列表样式设置
@@ -206,7 +204,7 @@ fun AutoRefreshSettingsScreen(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                // 两列样式
+                // 两列
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -235,7 +233,7 @@ fun AutoRefreshSettingsScreen(
                     }
                 }
 
-                // 单列样式
+                // 单列
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

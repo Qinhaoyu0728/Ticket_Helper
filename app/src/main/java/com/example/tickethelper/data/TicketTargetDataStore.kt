@@ -51,7 +51,7 @@ class TicketTargetDataStore(private val context: Context) {
         }
     }
 
-    // 单独保存整体状态开关配置
+    // 保存整体状态配置
     suspend fun saveShowOverallStatusConfig(show: Boolean) {
         context.dataStore.edit { preferences ->
             val currentConfig = getAutoRefreshConfig.first()
@@ -61,7 +61,7 @@ class TicketTargetDataStore(private val context: Context) {
         }
     }
 
-    // 单独保存样式配置
+    // 保存样式配置
     suspend fun saveListStyleConfig(listStyle: String) {
         context.dataStore.edit { preferences ->
             val currentConfig = getAutoRefreshConfig.first()
@@ -86,16 +86,16 @@ class TicketTargetDataStore(private val context: Context) {
         .map { preferences ->
             val jsonString = preferences[TICKET_TARGETS_KEY] ?: "[]"
             try {
-                json.decodeFromString(jsonString) // 解析数据
+                json.decodeFromString(jsonString)
             } catch (e: Exception) {
                 e.printStackTrace()
-                emptyList() // 解析失败时返回空列表
+                emptyList()
             }
         }
 
     suspend fun saveTicketTarget(target: TicketTarget) {
         context.dataStore.edit { preferences ->
-            val currentTargets = getTicketTargets.first() // 立即获取当前数据
+            val currentTargets = getTicketTargets.first()
             val targetToSave = if (target.id.isEmpty()) {
                 target.copy(id = UUID.randomUUID().toString())
             } else {

@@ -31,7 +31,7 @@ fun AboutScreen() {
     val context = LocalContext.current
     var appSize by remember { mutableStateOf("计算中...") }
 
-    // 计算应用占用空间
+    // 计算占用空间
     LaunchedEffect(Unit) {
         appSize = withContext(Dispatchers.IO) {
             calculateAppSize(context).ifEmpty { "获取失败" }
@@ -52,9 +52,9 @@ fun AboutScreen() {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
-            contentPadding = PaddingValues(bottom = 52.dp) // 底部预留空间
+            contentPadding = PaddingValues(bottom = 52.dp)
         ) {
-            // 版本号卡片
+            // 版本号
             item {
                 InfoCard(
                     title = "版本信息",
@@ -68,7 +68,7 @@ fun AboutScreen() {
                 )
             }
 
-            // 简介卡片
+            // 简介
             item {
                 InfoCard(
                     title = "应用简介",
@@ -115,7 +115,7 @@ fun AboutScreen() {
 }
 
 /**
- * 通用信息卡片组件
+ * 通用信息卡片
  */
 @Composable
 private fun InfoCard(
@@ -145,7 +145,7 @@ private fun InfoCard(
 }
 
 /**
- * 计算应用占用的存储空间
+ * 计算存储空间
  */
 private fun calculateAppSize(context: Context): String {
     return try {
@@ -165,7 +165,7 @@ private fun calculateAppSize(context: Context): String {
 }
 
 /**
- * 格式化文件大小显示
+ * 格式化文件大小
  */
 private fun formatFileSize(bytes: Long): String {
     return when {

@@ -26,7 +26,6 @@ fun HideFeaturesScreen(navController: NavController) {
     val context = LocalContext.current
     val hiddenFeaturesDataStore = HiddenFeaturesDataStore.getInstance(context)
 
-    // 存储隐藏的功能
     var hiddenFeatures by remember { mutableStateOf(emptySet<String>()) }
 
     // 加载已保存的隐藏功能
@@ -36,7 +35,7 @@ fun HideFeaturesScreen(navController: NavController) {
         }
     }
 
-    // 切换功能的隐藏状态
+    // 切换隐藏状态
     fun toggleFeatureVisibility(featureName: String) {
         val newHiddenFeatures = if (hiddenFeatures.contains(featureName)) {
             hiddenFeatures - featureName // 取消隐藏
@@ -73,7 +72,6 @@ fun HideFeaturesScreen(navController: NavController) {
                 modifier = Modifier.padding(16.dp)
             )
 
-            // 卡片式列表（与排序页面保持一致）
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(horizontal = 16.dp)
@@ -122,14 +120,14 @@ fun HideFeaturesScreen(navController: NavController) {
 
                             Spacer(modifier = Modifier.width(16.dp))
 
-                            // 功能名称
+                            // 名称
                             Text(
                                 text = feature.name,
                                 style = MaterialTheme.typography.bodyLarge,
                                 modifier = Modifier.weight(1f)
                             )
 
-                            // 隐藏状态指示
+                            // 状态指示
                             Checkbox(
                                 checked = isHidden,
                                 onCheckedChange = { toggleFeatureVisibility(feature.name) },

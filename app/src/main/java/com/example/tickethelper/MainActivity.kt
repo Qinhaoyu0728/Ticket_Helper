@@ -24,21 +24,21 @@ class MainActivity : ComponentActivity() {
             val systemInDarkMode = isSystemInDarkTheme()
             var themeMode by remember { mutableStateOf(AppThemeMode.FOLLOW_SYSTEM) }
 
-            // 监听主题设置变化
+            // 主题设置
             LaunchedEffect(Unit) {
                 themeDataStore.getThemeMode.collect { mode ->
                     themeMode = mode
                 }
             }
 
-            // 确定当前是否使用深色模式
+            // is 深色模式 ?
             val useDarkTheme = when (themeMode) {
                 AppThemeMode.LIGHT -> false
                 AppThemeMode.DARK -> true
                 AppThemeMode.FOLLOW_SYSTEM -> systemInDarkMode
             }
 
-            // 应用主题
+            // 主题
             MaterialTheme(
                 colorScheme = if (useDarkTheme) darkColorScheme() else lightColorScheme(),
                 content = {

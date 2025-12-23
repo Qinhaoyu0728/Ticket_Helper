@@ -43,11 +43,11 @@ fun MoreFeaturesScreen(navController: NavController) {
     var hiddenFeatures by remember { mutableStateOf(emptySet<String>()) }
     var hiddenFeatureList by remember { mutableStateOf(emptyList<Feature>()) }
 
-    // 加载隐藏的功能
+    // 加载隐藏
     LaunchedEffect(Unit) {
         hiddenFeaturesDataStore.getHiddenFeatures.collect { hidden ->
             hiddenFeatures = hidden
-            // 筛选出隐藏的功能
+            // 筛选隐藏
             hiddenFeatureList = featuresList.filter { hidden.contains(it.name) }
         }
     }
@@ -66,7 +66,7 @@ fun MoreFeaturesScreen(navController: NavController) {
     ) { innerPadding ->
 
         if (hiddenFeatureList.isEmpty()) {
-            // 空状态：无隐藏卡片时显示提示
+            // empty
             Box(
                 modifier = Modifier
                     .padding(innerPadding)
@@ -82,10 +82,10 @@ fun MoreFeaturesScreen(navController: NavController) {
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
-                        lineHeight = 28.sp // 确保换行效果
+                        lineHeight = 28.sp
                     )
 
-                    // 可添加跳转按钮（可选）
+                    // 跳转
                     TextButton(
                         onClick = {
                             navController.navigate(NavigationRoutes.SETTINGS)

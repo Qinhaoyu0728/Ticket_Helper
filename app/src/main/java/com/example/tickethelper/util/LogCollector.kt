@@ -8,21 +8,21 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object LogCollector {
-    // 日志缓存（最多保存100条）
+    // 日志缓存（max 100条）
     private val _logList = MutableStateFlow<MutableList<LogItem>>(mutableListOf())
     val logList: StateFlow<List<LogItem>> = _logList.asStateFlow()
 
     // 日志格式化器
     private val dateFormat = SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault())
 
-    // 目标日志TAG（仅收集F1_TicketRefresh）
+    // TAG（仅收集F1_TicketRefresh）
     private const val TARGET_TAG = "F1_TicketRefresh"
 
     /**
-     * 收集日志（需在打印日志时调用）
+     * 收集
      */
     fun collectLog(level: String, tag: String, message: String) {
-        if (tag != TARGET_TAG) return // 仅收集目标TAG的日志
+        if (tag != TARGET_TAG) return
 
         val logItem = LogItem(
             time = dateFormat.format(Date()),
@@ -31,7 +31,6 @@ object LogCollector {
             message = message
         )
 
-        // 线程安全更新日志列表
         synchronized(_logList) {
             val newList = _logList.value.toMutableList()
             newList.add(logItem)
@@ -44,24 +43,24 @@ object LogCollector {
     }
 
     /**
-     * 清空日志
+     * 清空
      */
     fun clearLogs() {
         _logList.value = mutableListOf()
     }
 
     /**
-     * 日志数据类
+     * 日志数据
      */
     data class LogItem(
         val time: String, // 时间戳 HH:mm:ss.SSS
-        val level: String, // 日志级别 D/I/W/E/V
-        val tag: String, // 日志TAG
-        val message: String // 日志内容
+        val level: String, // 级别 D/I/W/E/V
+        val tag: String, // TAG
+        val message: String // 内容
     )
 }
 
-// 扩展函数：快速打印并收集日志
+// 定义log
 fun logD(tag: String, msg: String) {
     Log.d(tag, msg)
     LogCollector.collectLog("D", tag, msg)
