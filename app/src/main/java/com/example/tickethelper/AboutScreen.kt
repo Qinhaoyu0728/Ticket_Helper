@@ -1,13 +1,21 @@
 package com.example.tickethelper
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,6 +38,26 @@ import java.io.File
 fun AboutScreen() {
     val context = LocalContext.current
     var appSize by remember { mutableStateOf("计算中...") }
+
+    // 更新地址
+    val UPDATE_URLS = mapOf(
+        "123云盘" to "https://www.123865.com/s/oTwEjv-Hra7d?pwd=PZZl#",
+        "夸克云盘" to "https://pan.quark.cn/s/c7d6151fbd31",
+        "Github" to "https://github.com/Qinhaoyu0728/Ticket_Helper"
+    )
+    val showUpdateDialog = remember { mutableStateOf(false) }
+
+    // 跳转更新
+    fun openUrlInBrowser(context: Context, urlKey: String) {
+        val url = UPDATE_URLS[urlKey] ?: return
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(context, "无法打开浏览器，请检查是否安装", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     // 计算占用空间
     LaunchedEffect(Unit) {
@@ -61,9 +89,40 @@ fun AboutScreen() {
                     content = {
                         Text(
                             text = "当前版本: ${BuildConfig.VERSION_NAME} (${BuildConfig.BUILD_TYPE})\n"+
-                            "Coded by QinMike",
+                            "Coded by QinMike\n",
                             style = MaterialTheme.typography.bodyMedium
                         )
+
+                        Row(
+                            modifier = Modifier.wrapContentWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            // 更新
+                            Button(
+                                onClick = { showUpdateDialog.value = true },
+                                modifier = Modifier.wrapContentWidth()
+                            ) {
+                                Icon(
+                                    Icons.Default.Update,
+                                    contentDescription = "获取更新",
+                                    modifier = Modifier.padding(end = 4.dp)
+                                )
+                                Text("获取更新")
+                            }
+
+                            // Github
+                            Button(
+                                onClick = { openUrlInBrowser(context, "Github") },
+                                modifier = Modifier.wrapContentWidth()
+                            ) {
+                                Icon(
+                                    Icons.Default.Build,
+                                    contentDescription = "开源网址",
+                                    modifier = Modifier.padding(end = 4.dp)
+                                )
+                                Text("Github")
+                            }
+                        }
                     }
                 )
             }
@@ -110,6 +169,67 @@ fun AboutScreen() {
                     }
                 )
             }
+        }
+
+        // 更新
+        if (showUpdateDialog.value) {
+            AlertDialog(
+                onDismissRequest = { showUpdateDialog.value = false },
+                title = { Text("获取更新") },
+                text = {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text("请选择下载渠道：")
+                    }
+                },
+                confirmButton = {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        // 123云盘
+                        Button(
+                            onClick = {
+                                openUrlInBrowser(context, "123云盘")
+                                showUpdateDialog.value = false
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("123云盘下载")
+                        }
+
+                        // 夸克云盘
+                        Button(
+                            onClick = {
+                                openUrlInBrowser(context, "夸克云盘")
+                                showUpdateDialog.value = false
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("夸克云盘下载")
+                        }
+
+                        Text(
+                            text = "夸克云盘提取码：FEVC",
+                            style = MaterialTheme.typography.labelMedium,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+
+                        TextButton(
+                            onClick = { showUpdateDialog.value = false },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("取消")
+                        }
+                    }
+                },
+
+                dismissButton = {}
+            )
         }
     }
 }
