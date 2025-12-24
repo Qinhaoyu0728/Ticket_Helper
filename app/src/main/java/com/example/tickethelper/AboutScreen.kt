@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -26,6 +28,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,6 +43,10 @@ import java.io.File
 fun AboutScreen() {
     val context = LocalContext.current
     var appSize by remember { mutableStateOf("计算中...") }
+
+    val F1FontFamily = FontFamily(
+        Font(R.font.formula1, FontWeight.Normal)
+    )
 
     // 更新地址
     val UPDATE_URLS = mapOf(
@@ -82,6 +91,51 @@ fun AboutScreen() {
             verticalArrangement = Arrangement.Top,
             contentPadding = PaddingValues(bottom = 52.dp)
         ) {
+            // 应用图标和基本信息
+            item {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 24.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    // 应用图标
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_launcher),
+                        contentDescription = "应用图标",
+                        modifier = Modifier.size(120.dp)
+                    )
+
+                    // 简介
+                    Text(
+                        text = "Ticket Helper",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontFamily = F1FontFamily, // 绑定自定义字体
+                            fontSize = 18.sp
+                        )
+                    )
+
+                    // 标签
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(24.dp)
+                    ) {
+                        Text(
+                            text = "开源",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "免费",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+
             // 版本号
             item {
                 InfoCard(
@@ -89,7 +143,7 @@ fun AboutScreen() {
                     content = {
                         Text(
                             text = "当前版本: ${BuildConfig.VERSION_NAME} (${BuildConfig.BUILD_TYPE})\n"+
-                            "Coded by QinMike\n",
+                            "Coded by QinMike | MIT License\n",
                             style = MaterialTheme.typography.bodyMedium
                         )
 
