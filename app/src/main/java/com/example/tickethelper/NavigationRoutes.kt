@@ -12,5 +12,10 @@ object NavigationRoutes {
     const val TICKET_ADD = "ticket_add"
     const val AUTO_REFRESH_SETTINGS = "auto_refresh_settings"
     const val APP_TICKET = "app_ticket"
+    const val APP_TICKET_SETTINGS = "app_ticket_settings"
+    //const val MESSAGE_BOX = "message_box"
+
+    const val JS_TICKET_MONITOR = "js_ticket_monitor"
+    const val JS_FOCUS_LIST = "js_focus_list"
     const val LOG_SCREEN = "log_screen"
 }

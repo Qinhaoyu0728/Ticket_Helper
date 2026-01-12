@@ -12,8 +12,8 @@
       "filters": [],
       "attributes": [],
       "versionCode": 1,
-      "versionName": "1.0.5",
-      "outputFile": "TicketHelper_release_1.0.5_202512241310.apk"
+      "versionName": "1.0.6pre3",
+      "outputFile": "TicketHelper_release_1.0.6pre3_202601101523.apk"
     }
   ],
   "elementType": "File",
@@ -22,14 +22,14 @@
       "minApi": 28,
       "maxApi": 30,
       "baselineProfiles": [
-        "baselineProfiles/1/TicketHelper_release_1.0.5_202512241310.dm"
+        "baselineProfiles/1/TicketHelper_release_1.0.6pre3_202601101523.dm"
       ]
     },
     {
       "minApi": 31,
       "maxApi": 2147483647,
       "baselineProfiles": [
-        "baselineProfiles/0/TicketHelper_release_1.0.5_202512241310.dm"
+        "baselineProfiles/0/TicketHelper_release_1.0.6pre3_202601101523.dm"
       ]
     }
   ],

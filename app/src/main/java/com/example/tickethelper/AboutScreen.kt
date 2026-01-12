@@ -78,7 +78,7 @@ fun AboutScreen() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("关于抢票助手特供版") }
+                title = { Text("关于 | About") }
             )
         }
     ) { innerPadding ->
@@ -182,21 +182,21 @@ fun AboutScreen() {
             }
 
             // 简介
-            item {
-                InfoCard(
-                    title = "应用简介",
-                    content = {
-                        Text(
-                            text = "主要功能包括：\n" +
-                                    "- 久事体育F1余票查询\n" +
-                                    "- 自定义门票查询\n" +
-                                    "- 后台余票自动提醒（测试中）",
-                            style = MaterialTheme.typography.bodyMedium,
-                            lineHeight = 20.sp
-                        )
-                    }
-                )
-            }
+//            item {
+//                InfoCard(
+//                    title = "应用简介",
+//                    content = {
+//                        Text(
+//                            text = "主要功能包括：\n" +
+//                                    "- 久事体育F1余票查询\n" +
+//                                    "- 自定义门票查询\n" +
+//                                    "- 后台余票自动提醒（测试中）",
+//                            style = MaterialTheme.typography.bodyMedium,
+//                            lineHeight = 20.sp
+//                        )
+//                    }
+//                )
+//            }
 
             item {
                 InfoCard(
@@ -205,7 +205,8 @@ fun AboutScreen() {
                         Text(
                             text = "邮箱：1436974384@qq.com\n" +
                                     "小红书：Qin Mike\n" +
-                                    "抖音：QinMike",
+                                    "抖音：QinMike\n" +
+                                    "赞助/爱发电❤：QinMike",
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }

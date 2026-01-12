@@ -2,6 +2,8 @@ package com.example.tickethelper.util
 
 // 国内久事APP渠道 --> AppTicketScreen
 
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.Retrofit
@@ -18,10 +20,25 @@ interface VipTicketService {
     ): VipTicketResponse
 
     companion object {
-        fun create(): VipTicketService {
+        fun create(appId: String?): VipTicketService {
+            val interceptor = Interceptor { chain ->
+                val original = chain.request()
+                val requestBuilder = original.newBuilder()
+                // app_id header
+                appId?.takeIf { it.isNotEmpty() }?.let {
+                    requestBuilder.addHeader("app_id", it)
+                }
+                chain.proceed(requestBuilder.build())
+            }
+
+            val client = OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build()
+
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://jsapp.jussyun.com/jiushi-ticket/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build()
             return retrofit.create(VipTicketService::class.java)
         }

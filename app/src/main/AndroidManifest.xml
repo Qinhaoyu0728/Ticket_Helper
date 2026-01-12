@@ -25,6 +25,11 @@
             android:foregroundServiceType="dataSync"
             android:exported="false"
             android:permission="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+        <service
+            android:name=".service.JsTicketMonitorService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false"
+            android:permission="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

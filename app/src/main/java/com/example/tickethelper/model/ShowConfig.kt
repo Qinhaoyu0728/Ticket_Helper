@@ -61,6 +61,28 @@ object ShowConfigRepository {
             name = "E看台车迷应援区",
             showId = "6931533e49963100012599e9",
             sign = "NkVEMUMwOURCNzBGODM0NDNCOTVGNDgzQTE3RkE2OTc="
+        ),
+        ShowConfig(
+            name = "T1 Test",
+            showId = "6937d3ce04da96000168c45e",
+            sign = "NEQ0MTExNjk4NEQxN0IyNEJEN0VDMUY5RjU0OEUzRUU="
         )
     )
+
+    private val showIds = mutableListOf<String>()
+
+    // 添加票目ID
+    fun addShowId(showId: String) {
+        if (!showIds.contains(showId)) {
+            showIds.add(showId)
+        }
+    }
+
+    // 获取所有票目ID
+    fun getShowIds(): List<String> = showIds.toList()
+
+    // 获取票目签名
+    fun getSignForShow(showId: String): String {
+        return "generated_sign_for_$showId"
+    }
 }

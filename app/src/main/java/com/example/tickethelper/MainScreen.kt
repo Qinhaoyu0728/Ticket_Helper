@@ -22,14 +22,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.tickethelper.data.AppSettingsDataStore
 import com.example.tickethelper.data.TicketTargetDataStore
 import com.example.tickethelper.datastore.dataStore
 import com.example.tickethelper.navigation.NavigationRoutes
+import com.example.tickethelper.ui.settings.AppTicketSettingsScreen
 import com.example.tickethelper.ui.settings.AutoRefreshSettingsScreen
 import com.example.tickethelper.ui.settings.FeatureOrderScreen
 import com.example.tickethelper.ui.settings.HideFeaturesScreen
 import com.example.tickethelper.ui.settings.SettingsScreen
 import com.example.tickethelper.ui.settings.ThemeSettingsScreen
+import com.example.tickethelper.util.VipTicketService
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -106,6 +111,38 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
             composable(NavigationRoutes.APP_TICKET) {
                 AppTicketScreen(navController = navController)
+            }
+            composable(NavigationRoutes.APP_TICKET_SETTINGS) {
+                AppTicketSettingsScreen(navController)
+            }
+
+//            composable(NavigationRoutes.MESSAGE_BOX) {
+//                val context = LocalContext.current
+//                val appSettingsDataStore = AppSettingsDataStore.getInstance(context)
+//
+//                // 同步获取appId
+//                val appId = runBlocking {
+//                    appSettingsDataStore.getAppId.first() ?: "" // 无appId时给空字符串，后续Service内部处理
+//                }
+//
+//                // 创建VipTicketService（确保Service支持空appId容错）
+//                val vipTicketService = if (appId.isNotEmpty()) {
+//                    VipTicketService.create(appId)
+//                } else {
+//                    VipTicketService.create(null)
+//                }
+//
+//                MessageBoxScreen(
+//                    navController = navController,
+//                    vipTicketService = vipTicketService
+//                )
+//            }
+
+            composable(NavigationRoutes.JS_TICKET_MONITOR) {
+                JsTicketMonitorScreen(navController = navController)
+            }
+            composable(NavigationRoutes.JS_FOCUS_LIST) {
+                JsFocusListScreen(navController = navController)
             }
 
             composable(NavigationRoutes.LOG_SCREEN) {

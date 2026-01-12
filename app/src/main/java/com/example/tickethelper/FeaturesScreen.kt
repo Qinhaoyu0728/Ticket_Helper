@@ -18,7 +18,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Assignment
 import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.EventSeat
+import androidx.compose.material.icons.filled.Monitor
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Stars
 import androidx.compose.material.icons.outlined.Api
@@ -66,6 +68,7 @@ data class Feature(
 val featuresList = listOf(
     Feature("抢票助手", Icons.Default.EventSeat, 0xFF9C27B0),
     Feature("国内接口查询", Icons.Default.Stars, 0xFF2196F3),
+    Feature("JS余票监控", Icons.Default.Monitor, 0xFFF44336),
     Feature("日志", Icons.AutoMirrored.Filled.Assignment, 0xFFA3A8A7),
     Feature("更多", Icons.Default.MoreVert, 0xFF6B7280)
 )
@@ -155,7 +158,7 @@ fun FeaturesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("TicketHelper-Special Edition") },
+                title = { Text("Ticket Helper") },
                 actions = {
                     IconButton(onClick = {navController.navigate(NavigationRoutes.SETTINGS) }) {
                         Icon(Icons.Default.Settings, contentDescription = "设置")
@@ -228,6 +231,8 @@ fun FeatureCard(
             "抢票助手" -> navController.navigate(NavigationRoutes.TICKET_ASSISTANT)
 
             "国内接口查询" -> navController.navigate(NavigationRoutes.APP_TICKET)
+
+            "JS余票监控" -> navController.navigate(NavigationRoutes.JS_TICKET_MONITOR)
 
             "日志" -> navController.navigate(NavigationRoutes.LOG_SCREEN)
 
